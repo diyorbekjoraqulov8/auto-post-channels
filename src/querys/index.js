@@ -18,7 +18,7 @@ bot.on('callback_query', async (ctx) => {
                     let replyMessage = "Sizning kanallaringiz!\n\n"
 
                     for (let i = 0; i < channels.length; i++) {
-                        replyMessage += `${i+1}) ${channels[i].channelName}: @${channels[i].channelUserName}`
+                        replyMessage += `${i+1}) ${channels[i].channelName}: @${channels[i].channelUserName}\n`
                     }
                     ctx.reply(replyMessage)
                 } else if (queryAction[1] === 'add') {
