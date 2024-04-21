@@ -9,12 +9,6 @@ const home_keyboards = Markup.inlineKeyboard([
             text:"Mening kanallarim",
             callback_data: 'channel-my'
         },
-    ],
-    [
-        {
-            text:"Elon berish",
-            callback_data: 'post-channel'
-        },
     ]
 ])
 

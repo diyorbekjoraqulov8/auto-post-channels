@@ -50,7 +50,7 @@ async function sendPostChannels(user, type, ctx) {
                 const getChatMember= await ctx.telegram.getChatMember(channels[i].channelId, botId);
 
                 if(channels[i].status === 'supergroup' || getChatMember?.can_post_messages) {
-                    success += `${i+1})${channels[i].channelName}\n`
+                    success += `${i+1}) ${channels[i].channelName} @${channels[i].channelUserName}\n`
 
                     await postGenerator(channels[i].channelId, type, ctx)
                 } else {

@@ -18,10 +18,10 @@ const User = new Schema({
     },
     isSeller:Object,
     active:{
-        type: Number,
-        default: 0
-        //   0 = Admin tomonidan tasdiqlanmagan
-        //   1 = Admin tomonidan tasdiqlangan
+        type: Boolean,
+        default: false
+        //   false = Admin tomonidan tasdiqlanmagan
+        //   true = Admin tomonidan tasdiqlangan
     }
 })
 

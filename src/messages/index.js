@@ -2,7 +2,6 @@ const bot = require('../bot')
 const {findUser, deleteUser, updateUser, getAllUsers} = require("../features/common/user");
 const {authUser} = require("../auth");
 const {welcome} = require("../common/messages/welcome-message");
-const {Markup} = require("telegraf");
 const {home_keyboards} = require("../common/buttons/inlineKeyboards");
 const postChannels = require('../features/user/postChannels')
 const {deleteChannelDb, saveChannelDb, getChannel} = require("../features/user/channelCrud");
@@ -88,14 +87,23 @@ async function messageWorker(type, ctx) {
         // User Auth
         await authUser(user, ctx)
     } else {
-        if(text === '/post' || text === 'post') {
-            await updateUser(user?._id, {
-                ...user._doc,
-                action: 'post-channels'
-            })
-            ctx.reply("Postni jo'nating")
-        } else if(user?.action === 'post-channels') {
-            await postChannels(user, type, ctx)
+        if(user?.active) {
+            if(text === '/post' || text === 'post') {
+                await updateUser(user?._id, {
+                    ...user._doc,
+                    action: 'post-channels'
+                })
+                ctx.reply("Postni jo'nating")
+            } else if(user?.action === 'post-channels') {
+                await postChannels(user, type, ctx)
+            }
+        } else {
+            const devs = await getAllUsers({ role: 'DEV' })
+            let replyMessage = "🤖 Botdan to'liq foydalanish uchun ADMIN tomonidan tasdiqlanishingiz kerak!\n\n👮 Adminlar\n\n"
+            for (let i = 0; i < devs?.length; i++) {
+                replyMessage += `${i+1}) ${devs[i]?.full_name}\nTEL: +998${devs[i]?.phone}`
+            }
+            ctx.reply(replyMessage)
         }
     }
 }

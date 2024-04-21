@@ -26,6 +26,8 @@ async function authUser(user, ctx) {
                 action: 'menu'
             })
 
+            // Notify admin
+
             ctx.reply(welcomeText, home_keyboards)
         } else {
             ctx.reply(res)
