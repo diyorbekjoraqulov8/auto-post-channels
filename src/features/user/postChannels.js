@@ -3,7 +3,7 @@ const {getAllChannels} = require("./channelCrud");
 
 async function postGenerator(channelId, type, ctx) {
     if (type === 'text') {
-        const text = ctx.message.text?.toLocaleLowerCase().trim()
+        const text = ctx.message.text
         const reply_markup = ctx.message?.reply_markup
 
         await ctx.telegram.sendMessage(channelId, text, {

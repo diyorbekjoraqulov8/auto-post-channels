@@ -14,7 +14,7 @@ async function authUser(user, ctx) {
             full_name: ctx.message.text?.trim(),
             action: 'auth-client-phone'
         })
-        ctx.reply("Raqamingizni kiriting!\nMisol: 83802922", Markup.removeKeyboard())
+        ctx.reply("Raqamingizni kiriting!\nMisol: 883802922", Markup.removeKeyboard())
     } else if(!user.phone) {
         let res = checkPhone(+text)
         if (res === true) {
