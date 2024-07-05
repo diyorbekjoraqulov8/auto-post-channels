@@ -4,7 +4,7 @@ const {authUser} = require("../auth");
 const {welcome} = require("../common/messages/welcome-message");
 const {home_keyboards} = require("../common/buttons/inlineKeyboards");
 const postChannels = require('../features/user/postChannels')
-const {deleteChannelDb, saveChannelDb, getChannel} = require("../features/user/channelCrud");
+const {deleteChannelDb, saveChannelDb, getChannel, editChannelDb} = require("../features/user/channelCrud");
 
 bot.start(async (ctx) => {
     if (ctx.chat.type === 'private') {
@@ -34,12 +34,16 @@ bot.on('my_chat_member', async (ctx) => {
             const channel = await getChannel({ channelId: chat?.id })
             if (channel?._id) {
                 adminNotificationMessage = `🔐 Ruxsatlar yangilandi:\n\nKanal: ${chat.title}\n@${chat?.username}`
+                await editChannelDb(channel._id, {
+                    canPostMessages: new_member?.can_post_messages || false
+                })
             } else {
                 await saveChannelDb({
                     channelName: chat?.title,
                     channelId: chat?.id,
                     channelUserName: chat?.username,
-                    status: chat?.type
+                    status: chat?.type,
+                    canPostMessages: new_member?.can_post_messages || false
                 })
                 adminNotificationMessage = `👮 Admin qilindi:\n\nKanal: ${chat?.title}\n@${chat?.username}`
             }
@@ -70,6 +74,11 @@ bot.on('photo', async (ctx) => {
 bot.on('video', async (ctx) => {
     if (ctx.chat.type === 'private') {
         await messageWorker('video', ctx)
+    }
+});
+bot.on('audio', async (ctx) => {
+    if (ctx.chat.type === 'private') {
+        await messageWorker('audio', ctx)
     }
 });
 bot.on('document', async (ctx) => {

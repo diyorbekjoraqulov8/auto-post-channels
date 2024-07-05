@@ -1,4 +1,3 @@
-const ChannelCrud = require("../../../model/channel");
 const {Channel} = require("../../../model");
 
 async function createChannelDb(channelInfo) {
@@ -9,6 +8,24 @@ async function createChannelDb(channelInfo) {
         throw new Error(`ERROR: ${error}`)
     }
 }
+
+async function editChannelDb (_id, value) {
+    try {
+        if (!_id) {
+            throw Error('Kanalni yangilash uchun ID kiriting')
+        } else if (!value) {
+            throw Error('Kanalni yangilash uchun VALUE kiriting')
+        }
+        return await Channel.findByIdAndUpdate(
+            {_id},
+            value,
+            { new:true }
+        )
+    } catch (error) {
+        throw new Error(`ERROR: ${error}`)
+    }
+}
+
 async function saveChannelDb(channelInfo) {
     try {
         await createChannelDb(channelInfo)
@@ -45,6 +62,7 @@ async function deleteChannelDb(props) {
 
 module.exports = {
     saveChannelDb,
+    editChannelDb,
     getChannel,
     getAllChannels,
     deleteChannelDb
